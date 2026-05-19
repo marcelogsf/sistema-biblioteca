@@ -1,0 +1,113 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+<h1>Relatório de Empréstimos</h1>
+
+<div style="display:flex; gap:20px; margin-bottom:20px;">
+
+    <div style="background:#28a745; color:white; padding:20px; border-radius:10px;">
+        <h2>{{ total_emprestimos }}</h2>
+        <p>Total de Empréstimos</p>
+    </div>
+
+    <div style="background:#007bff; color:white; padding:20px; border-radius:10px;">
+        <h2>{{ devolvidos }}</h2>
+        <p>Devolvidos</p>
+    </div>
+
+    <div style="background:#dc3545; color:white; padding:20px; border-radius:10px;">
+        <h2>{{ pendentes }}</h2>
+        <p>Pendentes</p>
+    </div>
+
+</div>
+
+<form method="GET" style="margin-bottom:20px;">
+
+    <label>Livro:</label>
+    <select name="livro">
+        <option value="">Todos</option>
+
+        {% for l in livros %}
+            <option value="{{ l.id }}">
+                {{ l.titulo }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label>Usuário:</label>
+    <select name="usuario">
+        <option value="">Todos</option>
+
+        {% for u in usuarios %}
+            <option value="{{ u.id }}">
+                {{ u.nome }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label>Status:</label>
+    <select name="devolvido">
+        <option value="">Todos</option>
+        <option value="false">Emprestado</option>
+        <option value="true">Devolvido</option>
+    </select>
+
+    <button type="submit" class="button">
+        Filtrar
+    </button>
+
+    <a href="/exportar-csv/" class="button" style="margin-left:10px;">
+    Exportar CSV
+    </a>
+
+</form>
+
+<table style="width:100%; background:white;">
+
+    <thead>
+        <tr>
+            <th>Livro</th>
+            <th>Usuário</th>
+            <th>Empréstimo</th>
+            <th>Devolução</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for e in emprestimos %}
+        <tr>
+            <td>{{ e.livro.titulo }}</td>
+
+            <td>{{ e.usuario.nome }}</td>
+
+            <td>
+                {{ e.data_emprestimo|date:"d/m/Y \\à\\s H:i" }}
+            </td>
+
+            <td>
+                {% if e.data_devolucao %}
+                    {{ e.data_devolucao|date:"d/m/Y \\à\\s H:i" }}
+                {% else %}
+                    —
+                {% endif %}
+            </td>
+
+            <td>
+                {% if e.devolvido %}
+                    ✅ Devolvido
+                {% else %}
+                    ❌ Pendente
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}
