@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
 from django.urls import path
 from django.shortcuts import redirect
@@ -69,7 +70,21 @@ exportar_csv.short_description = "Exportar empréstimos para CSV"
 
 # 📚 ADMIN DE LIVROS
 class LivroAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'autor', 'status_disponibilidade')
+    list_display = (
+        'titulo',
+        'autor',
+        'status_disponibilidade'
+    )
+
+    search_fields = (
+        'titulo',
+        'autor'
+    )
+
+    # 🔎 FILTRO LATERAL
+    list_filter = (
+        'disponivel',
+    )
 
     def status_disponibilidade(self, obj):
         if obj.disponivel:
@@ -78,6 +93,34 @@ class LivroAdmin(admin.ModelAdmin):
         return "❌ Emprestado"
 
     status_disponibilidade.short_description = "Status"
+
+
+# 👤 ADMIN DE USUÁRIOS
+class UsuarioAdmin(admin.ModelAdmin):
+    list_display = (
+        'nome',
+        'email',
+        'possui_emprestimos'
+    )
+
+    search_fields = (
+        'nome',
+        'email'
+    )
+
+    # 🔎 FILTRO LATERAL
+    list_filter = (
+        'emprestimo__devolvido',
+    )
+
+    def possui_emprestimos(self, obj):
+
+        if obj.emprestimo_set.exists():
+            return "📚 Já pegou livro"
+
+        return "❌ Nunca pegou"
+
+    possui_emprestimos.short_description = "Empréstimos"
 
 
 # 📚 ADMIN DE EMPRÉSTIMOS
@@ -92,7 +135,10 @@ class EmprestimoAdmin(admin.ModelAdmin):
 
     actions = [exportar_csv]
 
-    search_fields = ('livro__titulo', 'usuario__nome')
+    search_fields = (
+        'livro__titulo',
+        'usuario__nome'
+    )
 
     list_filter = (
         'devolvido',
@@ -105,7 +151,12 @@ class EmprestimoAdmin(admin.ModelAdmin):
         if obj.devolvido and obj.data_devolucao is None:
             obj.data_devolucao = timezone.now()
 
-        super().save_model(request, obj, form, change)
+        super().save_model(
+            request,
+            obj,
+            form,
+            change
+        )
 
 
 # 🎨 ADMIN CUSTOMIZADO
@@ -118,7 +169,12 @@ class BibliotecaAdmin(admin.AdminSite):
         urls = super().get_urls()
 
         custom_urls = [
-            path('relatorio/', self.admin_view(self.relatorio_view))
+            path(
+                'relatorio/',
+                self.admin_view(
+                    self.relatorio_view
+                )
+            )
         ]
 
         return custom_urls + urls
@@ -128,10 +184,16 @@ class BibliotecaAdmin(admin.AdminSite):
 
 
 # 🚀 INSTÂNCIA DO ADMIN
-admin_site = BibliotecaAdmin(name='biblioteca_admin')
+admin_site = BibliotecaAdmin(
+    name='biblioteca_admin'
+)
 
 
 # 📌 REGISTROS
 admin_site.register(Livro, LivroAdmin)
-admin_site.register(Usuario)
+admin_site.register(Usuario, UsuarioAdmin)
 admin_site.register(Emprestimo, EmprestimoAdmin)
+
+# 🔐 AUTENTICAÇÃO
+admin_site.register(User)
+admin_site.register(Group)
