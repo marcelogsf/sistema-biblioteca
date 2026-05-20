@@ -122,31 +122,38 @@ biblioteca/
 
 ### 🔹 Dashboard Inicial
 
-> (INSERIR PRINT DO DASHBOARD)
+<img width="1892" height="902" alt="image" src="https://github.com/user-attachments/assets/cea69a09-efb3-43de-adfb-39381b78a4fd" />
+
 
 ---
 
 ### 🔹 Tela de Livros
 
-> (INSERIR PRINT DA TELA DE LIVROS)
+<img width="1912" height="901" alt="image" src="https://github.com/user-attachments/assets/a1431b1b-1217-4841-b736-555b5de69f75" />
+
 
 ---
 
 ### 🔹 Tela de Usuários
 
-> (INSERIR PRINT DA TELA DE USUÁRIOS)
+<img width="1917" height="902" alt="image" src="https://github.com/user-attachments/assets/a06b5ee3-a74a-478e-9efd-a22e7b97f3ce" />
+
 
 ---
 
 ### 🔹 Tela de Empréstimos
 
-> (INSERIR PRINT DA TELA DE EMPRÉSTIMOS)
+<img width="1915" height="897" alt="image" src="https://github.com/user-attachments/assets/473e68f2-4c0c-4256-9854-64c79c6f3edd" />
+
 
 ---
 
 ### 🔹 Tela de Relatórios
 
-> (INSERIR PRINT DA TELA DE RELATÓRIOS)
+<img width="1891" height="897" alt="image" src="https://github.com/user-attachments/assets/2019322f-0f7c-4945-835e-cb91fa75d931" />
+<img width="1917" height="1012" alt="image" src="https://github.com/user-attachments/assets/ca254553-95bf-49cb-9c71-c4ba8bd9d443" />
+
+
 
 ---
 
